@@ -2,7 +2,7 @@
 
 import requests
 import textwrap
-from retriever import retrieve
+from src.retriever import retrieve
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 MODEL_NAME = "qwen2.5:7b-instruct"
@@ -28,34 +28,16 @@ Provide a clear answer (4–8 sentences). Do NOT invent information.
 """.strip()
 
 
-def call_ollama(prompt: str) -> str:
-    payload = {
-        "model": MODEL_NAME,
-        "prompt": prompt,
-        "stream": False
-    }
+def call_ollama(prompt: str, model: str):
+    payload = {"model": model, "prompt": prompt, "stream": False}
+    resp = requests.post(OLLAMA_URL, json=payload, timeout=120)
+    return resp.json().get("response", "")
 
-    response = requests.post(OLLAMA_URL, json=payload, timeout=180)
-    response.raise_for_status()
-    data = response.json()
-
-    # Qwen sometimes adds thinking markers if running R1 distill variants.
-    cleaned = data.get("response", "")
-    cleaned = cleaned.replace("<think>", "").replace("</think>", "")
-    return cleaned.strip()
-
-
-def answer_question(question: str, k: int = 5) -> str:
+def answer_question(question: str, k: int = 5, model="qwen2.5:7b-instruct"):
     hits = retrieve(question, k=k)
-
-    if not hits:
-        return "I couldn't find any relevant documents in the index."
-
     contexts = [h["text"] for h in hits]
     prompt = build_prompt(question, contexts)
-    answer = call_ollama(prompt)
-
-    return textwrap.dedent(answer).strip()
+    return call_ollama(prompt, model=model)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,26 @@
+.animated-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    display: inline-flex;
+}
+
+.animated-title span {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(.25,.75,.5,1);
+}
+
+/* Each letter goes up by 100% of its size */
+.animated-title span:hover {
+    transform: translateY(-100%);
+}
+
+/* Staggered delay for cascading hover animation */
+.animated-title span:nth-child(1) { transition-delay: 0s; }
+.animated-title span:nth-child(2) { transition-delay: 0.03s; }
+.animated-title span:nth-child(3) { transition-delay: 0.06s; }
+.animated-title span:nth-child(4) { transition-delay: 0.09s; }
+.animated-title span:nth-child(5) { transition-delay: 0.12s; }
+.animated-title span:nth-child(6) { transition-delay: 0.15s; }
+.animated-title span:nth-child(7) { transition-delay: 0.18s; }
+.animated-title span:nth-child(8) { transition-delay: 0.21s; }

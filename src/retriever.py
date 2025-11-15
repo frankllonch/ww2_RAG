@@ -2,7 +2,7 @@ from typing import List, Dict, Any
 
 from elasticsearch import Elasticsearch
 
-from embedder import embed_query
+from src.embedder import embed_query
 
 INDEX_NAME = "ww2_wiki"
 

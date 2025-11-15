@@ -5,8 +5,8 @@ from typing import Iterable
 from elasticsearch import Elasticsearch, helpers
 from tqdm import tqdm
 
-from chunker import chunk_text
-from embedder import embed_documents
+from src.embedder import embed_documents
+from src.chunker import chunk_text
 
 DATA_PATH = Path("data/raw_wiki.jsonl")
 INDEX_NAME = "ww2_wiki"
