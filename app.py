@@ -5,8 +5,6 @@ import streamlit.components.v1 as components
 import os
 
 
-st.markdown('<div class="smoke-bg"></div>', unsafe_allow_html=True)
-
 # Make Streamlit serve /static directory
 st.markdown("""
     <style>
@@ -23,6 +21,27 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 st.set_page_config(page_title="WW2 RAG Chat", page_icon="🪖", layout="wide")
+
+# ---------- LOAD LOCAL FONT AS BASE64 ----------
+import base64
+
+font_path = "static/fonts/fraktur_regular.ttf"
+
+with open(font_path, "rb") as f:
+    fraktur_base64 = base64.b64encode(f.read()).decode()
+
+font_css = f"""
+<style>
+@font-face {{
+    font-family: "FrakturWW2";
+    src: url("data:font/ttf;base64,{fraktur_base64}") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}}
+</style>
+"""
+
+st.markdown(font_css, unsafe_allow_html=True)
 
 # Load CSS
 def local_css(file_name):

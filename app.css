@@ -1,5 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=VT323&display=swap');
+
 .animated-title {
-    font-size: 4rem;
+    font-family: "FrakturWW2" !important;
+    font-size: 10rem;
+    letter-spacing: 0px;
+}
+
+
+.chat-message, .stMarkdown {
+    font-family: "Special Elite", system-ui !important;
+    font-size: 1.1rem;
+}
+
+.sidebar .stSelectbox, .sidebar, .stSidebar {
+    font-family: "VT323", monospace !important;
+    font-size: 20px !important;
+}
+
+.animated-title {
+    font-size: 10rem;
     font-weight: 900;
     display: inline-flex;
     gap: 0;
@@ -11,7 +31,7 @@
 /* Each letter container */
 .letter-wrapper {
     display: inline-block;
-    width: 0.8em;
+    width: 1em;
     height: 1em;        /* Fixed height so layout doesn't move */
     position: relative;
     overflow: hidden;   /* Allows letters to slide up/down */
