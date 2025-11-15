@@ -4,6 +4,9 @@ from src.utils import wrap_letters
 import streamlit.components.v1 as components
 import os
 
+
+st.markdown('<div class="smoke-bg"></div>', unsafe_allow_html=True)
+
 # Make Streamlit serve /static directory
 st.markdown("""
     <style>
@@ -28,13 +31,16 @@ def local_css(file_name):
 
 local_css("app.css")
 
+st.markdown("""<style> html, body { overflow-x: hidden; } </style>""", unsafe_allow_html=True)
 # Centered title with animation
-title = wrap_letters("WW2 RAG")
+title_html = wrap_letters("WW2 RAG")
+
 st.markdown(f"""
-<div style="text-align:center; margin-top: -30px;">
-    <h1 class="animated-title">{title}</h1>
+<div style="text-align:center; margin-top: -20px;">
+    <h1 class="animated-title">{title_html}</h1>
 </div>
 """, unsafe_allow_html=True)
+
 
 with open("static/helmet_base64.txt") as f:
     b64 = f.read()
@@ -47,11 +53,12 @@ components.html(f"""
               auto-rotate
               camera-controls
               disable-zoom
-              interaction-prompt="auto"
+              interaction-prompt="none"
               exposure="1.2"
               style="width:400px;height:400px;margin:auto;">
 </model-viewer>
 """, height=450)
+
 
 # --------------------
 # Chat history
@@ -73,26 +80,36 @@ st.sidebar.write(f"**Current model:** `{model_choice}`")
 # Display existing chat messages
 # --------------------
 for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
+    with st.chat_message(msg["role"], avatar=msg["avatar"]):
         st.markdown(msg["content"])
-
 # --------------------
 # User chat input
 # --------------------
+# USER INPUT
+# USER INPUT
 user_input = st.chat_input("Ask about World War II...")
 
 if user_input:
-    # Log user message
-    st.session_state.messages.append({"role": "user", "content": user_input})
 
-    with st.chat_message("user"):
+    # Save user message WITH avatar
+    st.session_state.messages.append({
+        "role": "user",
+        "content": user_input,
+        "avatar": "static/hitler.png"
+    })
+
+    with st.chat_message("user", avatar="static/hitler.png"):
         st.markdown(user_input)
 
-    # Generate answer
-    with st.chat_message("assistant"):
+    # Assistant response
+    with st.chat_message("assistant", avatar="static/stalin.png"):
         with st.spinner("Thinking..."):
             answer = answer_question(user_input, model=model_choice)
             st.markdown(answer)
 
-    # Save assistant message
-    st.session_state.messages.append({"role": "assistant", "content": answer})
+    # Save assistant message WITH avatar
+    st.session_state.messages.append({
+        "role": "assistant",
+        "content": answer,
+        "avatar": "static/stalin.png"
+    })
