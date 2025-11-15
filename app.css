@@ -18,6 +18,7 @@
     font-size: 20px !important;
 }
 
+
 .animated-title {
     font-size: 10rem;
     font-weight: 900;
@@ -36,6 +37,8 @@
     position: relative;
     overflow: hidden;   /* Allows letters to slide up/down */
 }
+
+
 
 /* Two layers: top (default) & bottom (appears on hover) */
 .letter {

@@ -66,6 +66,9 @@ with open("static/helmet_base64.txt") as f:
 
 components.html(f"""
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+                
+                
+
 
 <model-viewer src="data:model/gltf-binary;base64,{b64}"
               alt="WW2 Helmet"
@@ -73,10 +76,16 @@ components.html(f"""
               camera-controls
               disable-zoom
               interaction-prompt="none"
+              orbit-sensitivity="1"
+              min-field-of-view="40deg"
+              max-field-of-view="40deg"
+              min-camera-orbit="auto auto 80%"
+              max-camera-orbit="auto auto 80%"
               exposure="1.2"
-              style="width:400px;height:400px;margin:auto;">
+              style="width:400px;height:400px;margin:auto;"
+              >
 </model-viewer>
-""", height=450)
+""", height=470)
 
 
 # --------------------

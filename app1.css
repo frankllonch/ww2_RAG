@@ -1,0 +1,164 @@
+/* -------------------------
+   Global & fonts
+-------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=VT323&display=swap');
+
+html, body {
+    background: radial-gradient(circle at top, #252525 0, #050505 60%);
+    color: #f4f4f4;
+    overflow-x: hidden;
+}
+
+/* Fraktur for title */
+.animated-title {
+    font-family: "FrakturWW2", "Special Elite", system-ui;
+    font-size: 4rem;
+    font-weight: normal;
+    display: inline-flex;
+    letter-spacing: -0.05em;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+}
+
+/* Animated letters (top/bottom flip) */
+.letter-wrapper {
+    display: inline-block;
+    width: 0.75em;
+    height: 1em;
+    position: relative;
+    overflow: hidden;
+}
+
+.letter {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.55s cubic-bezier(.22, .61, .36, 1);
+    will-change: transform;
+}
+
+.letter.top {
+    transform: translateY(0%);
+}
+
+.letter.bottom {
+    transform: translateY(100%);
+}
+
+.letter-wrapper:hover .letter.top {
+    transform: translateY(-100%) scale(0.98);
+}
+
+.letter-wrapper:hover .letter.bottom {
+    transform: translateY(0%) scale(1.02);
+}
+
+/* Slight per-letter delay */
+.letter-wrapper:nth-child(1) .letter { transition-delay: 0s; }
+.letter-wrapper:nth-child(2) .letter { transition-delay: 0.03s; }
+.letter-wrapper:nth-child(3) .letter { transition-delay: 0.06s; }
+.letter-wrapper:nth-child(4) .letter { transition-delay: 0.09s; }
+.letter-wrapper:nth-child(5) .letter { transition-delay: 0.12s; }
+.letter-wrapper:nth-child(6) .letter { transition-delay: 0.15s; }
+.letter-wrapper:nth-child(7) .letter { transition-delay: 0.18s; }
+.letter-wrapper:nth-child(8) .letter { transition-delay: 0.21s; }
+
+.title-container {
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/* -------------------------
+   Cursor (gun icon)
+-------------------------- */
+
+body, html {
+    cursor: url("static/cursor_gun.png") 16 16, auto;
+}
+
+/* -------------------------
+   Chat panel (right column)
+-------------------------- */
+
+.chat-panel {
+    margin-top: 10px;
+    padding: 1rem;
+    border-radius: 18px;
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    box-shadow:
+        0 0 30px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(111, 217, 255, 0.25);
+    max-height: 70vh;
+    overflow-y: auto;
+    font-family: "Special Elite", system-ui;
+}
+
+/* Chat rows */
+.chat-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+}
+
+.msg-user {
+    flex-direction: row-reverse;
+}
+
+.avatar-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Bubbles */
+.chat-bubble {
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    max-width: 85%;
+    line-height: 1.4;
+    font-size: 0.95rem;
+}
+
+.bubble-right {
+    background: linear-gradient(135deg, #7b1010, #e03a3a);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.bubble-left {
+    background: linear-gradient(135deg, #132235, #1f3d5c);
+    color: #f6f7fb;
+    border-bottom-left-radius: 4px;
+}
+
+/* Input area */
+.chat-input-wrapper {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Model selector styling */
+.model-header {
+    font-family: "VT323", monospace;
+    font-size: 1.3rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    color: #a6d8ff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.model-current {
+    font-family: "VT323", monospace;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: #d8f4ff;
+}
