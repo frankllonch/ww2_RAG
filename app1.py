@@ -169,7 +169,7 @@ with col_chat:
             {
                 "role": "user",
                 "content": user_input,
-                "avatar": "static/hitler.png",  # path relative to Streamlit static root
+                "avatar": "static/truman.png",  # path relative to Streamlit static root
             }
         )
 
@@ -182,7 +182,7 @@ with col_chat:
             {
                 "role": "assistant",
                 "content": answer,
-                "avatar": "static/stalin.png",
+                "avatar": "static/churchill.png",
             }
         )
 

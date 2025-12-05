@@ -148,7 +148,7 @@ http://localhost:8501
 Features:
 
 - Animated WW2-style Fraktur title  
-- Hitler & Stalin avatars  
+- Truman & Churchill avatars  
 - LLM model switcher  
 - RAG context injection  
 - Embedded 3D helmet  
@@ -229,12 +229,3 @@ You now have a local WW2 RAG system with:
 - Animated UI  
 - Custom fonts  
 - 3D rendering
-
-If you want, I can also generate:
-
-- An installer script  
-- A Makefile  
-- Docker-only version  
-- A full developer guide  
-
-Just ask!

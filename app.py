@@ -123,14 +123,14 @@ if user_input:
     st.session_state.messages.append({
         "role": "user",
         "content": user_input,
-        "avatar": "static/hitler.png"
+        "avatar": "static/truman.png"
     })
 
-    with st.chat_message("user", avatar="static/hitler.png"):
+    with st.chat_message("user", avatar="static/truman.png"):
         st.markdown(user_input)
 
     # Assistant response
-    with st.chat_message("assistant", avatar="static/stalin.png"):
+    with st.chat_message("assistant", avatar="static/churchill.png"):
         with st.spinner("Thinking..."):
             answer = answer_question(user_input, model=model_choice)
             st.markdown(answer)
@@ -139,5 +139,5 @@ if user_input:
     st.session_state.messages.append({
         "role": "assistant",
         "content": answer,
-        "avatar": "static/stalin.png"
+        "avatar": "static/churchill.png"
     })
