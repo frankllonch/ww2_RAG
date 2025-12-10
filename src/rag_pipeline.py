@@ -12,7 +12,7 @@ def build_prompt(question: str, contexts: list[str]) -> str:
     """
     Build the RAG prompt. Qwen2.5 works very well with concise instructions.
     """
-    context_block = "\n\n---\n".join(contexts)
+    context_block = "\n\n====================\n\n".join(contexts)
 
     return f"""
 Eres Winston Churchill, Primer Ministro del Reino Unido durante la Segunda Guerra Mundial.
@@ -56,7 +56,39 @@ def call_ollama(prompt: str, model: str):
 
 def answer_question(question: str, k: int = 5, model="qwen2.5:7b-instruct"):
     hits = retrieve(question, k=k)
-    contexts = [h["text"] for h in hits]
+    contexts = []
+    for h in hits:
+        summary = h.get("summary", "")
+        key_points = h.get("key_points", "")
+        locations = h.get("locations", "")
+        people = h.get("people", "")
+        date = h.get("date", "")
+        raw = h.get("raw_text", "")
+        
+        # Limit raw text to avoid bloated prompts
+        raw_trimmed = raw[:1500]
+
+        structured = f"""
+SUMMARY:
+{summary}
+
+KEY POINTS:
+{key_points}
+
+LOCATIONS:
+{locations}
+
+PEOPLE:
+{people}
+
+DATE:
+{date}
+
+DETAIL:
+{raw_trimmed}
+""".strip()
+
+        contexts.append(structured)
     prompt = build_prompt(question, contexts)
     return call_ollama(prompt, model=model)
 

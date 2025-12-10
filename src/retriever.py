@@ -14,7 +14,7 @@ def retrieve(query: str, k: int = 5) -> List[Dict[str, Any]]:
     q_vector = embed_query(query)
 
     body = {
-        "_source": ["title", "url", "text"],
+        "_source": ["topic", "summary", "raw_text", "url", "key_points", "locations", "people", "date"],
         "query": {
             "script_score": {
                 "query": {"match_all": {}},
@@ -31,9 +31,14 @@ def retrieve(query: str, k: int = 5) -> List[Dict[str, Any]]:
     results = [
         {
             "score": h["_score"],
-            "title": h["_source"]["title"],
-            "url": h["_source"]["url"],
-            "text": h["_source"]["text"],
+            "topic": h["_source"].get("topic", ""),
+            "summary": h["_source"].get("summary", ""),
+            "raw_text": h["_source"].get("raw_text", ""),
+            "url": h["_source"].get("url", ""),
+            "key_points": h["_source"].get("key_points", ""),
+            "locations": h["_source"].get("locations", ""),
+            "people": h["_source"].get("people", ""),
+            "date": h["_source"].get("date", ""),
         }
         for h in hits
     ]

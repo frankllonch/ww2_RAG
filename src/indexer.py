@@ -5,10 +5,11 @@ from typing import Iterable
 from elasticsearch import Elasticsearch, helpers
 from tqdm import tqdm
 
-from src.embedder import embed_documents
-from src.chunker import chunk_text
+from embedder import embed_documents
+from chunker import chunk_text
 
-DATA_PATH = Path("data/raw_wiki.jsonl")
+
+DATA_PATH = Path("data/processed_wikipedia_structured.jsonl")
 INDEX_NAME = "ww2_wiki"
 
 # BGE-small -> 384 dims
@@ -34,9 +35,16 @@ def create_index(client: Elasticsearch):
     mapping = {
         "mappings": {
             "properties": {
-                "title": {"type": "text"},
-                "url": {"type": "keyword"},
-                "text": {"type": "text"},
+                "topic": {"type": "text"},
+                "summary": {"type": "text"},
+                "key_points": {"type": "text"},
+                "locations": {"type": "text"},
+                "people": {"type": "text"},
+                "date": {"type": "text"},
+                "raw_text": {"type": "text"},
+                "source": {"type": "text"},
+                "url": {"type": "text"},
+                "chunk_id": {"type": "integer"},
                 "embedding": {
                     "type": "dense_vector",
                     "dims": EMBEDDING_DIMS
@@ -50,21 +58,35 @@ def create_index(client: Elasticsearch):
 
 def iter_documents() -> Iterable[dict]:
     """
-    Yields docs ready to be embedded/indexed from raw_wiki.jsonl
+    Yields docs ready to be embedded/indexed from processed_wikipedia_structured.jsonl
     """
     with open(DATA_PATH, "r", encoding="utf-8") as f:
         for line in f:
             rec = json.loads(line)
-            title = rec["title"]
-            url = rec["url"]
-            content = rec["content"]
-            chunks = chunk_text(content, max_chars=1000, overlap=200)
+
+            topic = rec.get("topic", "")
+            summary = rec.get("summary", "")
+            key_points = rec.get("key_points", [])
+            locations = rec.get("locations", [])
+            people = rec.get("people", [])
+            date = rec.get("date", "")
+            raw_text = rec.get("raw_text", "")
+            source = rec.get("source", "wikipedia")
+            url = rec.get("url", "")
+
+            chunks = chunk_text(raw_text, max_chars=900, overlap=150)
 
             for i, chunk in enumerate(chunks):
                 yield {
-                    "title": title,
+                    "topic": topic,
+                    "summary": summary,
+                    "key_points": ", ".join(key_points),
+                    "locations": ", ".join(locations),
+                    "people": ", ".join(people),
+                    "date": date,
+                    "raw_text": chunk,
+                    "source": source,
                     "url": url,
-                    "text": chunk,
                     "chunk_id": i,
                 }
 
@@ -80,16 +102,23 @@ def bulk_index():
     actions = []
     for i in tqdm(range(0, len(docs), batch_size), desc="Indexing batches"):
         batch = docs[i : i + batch_size]
-        texts = [d["text"] for d in batch]
+        texts = [d["raw_text"] for d in batch]
         embeddings = embed_documents(texts)
 
         for doc, emb in zip(batch, embeddings):
             action = {
                 "_index": INDEX_NAME,
                 "_source": {
-                    "title": doc["title"],
+                    "topic": doc["topic"],
+                    "summary": doc["summary"],
+                    "key_points": doc["key_points"],
+                    "locations": doc["locations"],
+                    "people": doc["people"],
+                    "date": doc["date"],
+                    "raw_text": doc["raw_text"],
+                    "source": doc["source"],
                     "url": doc["url"],
-                    "text": doc["text"],
+                    "chunk_id": doc["chunk_id"],
                     "embedding": emb,
                 },
             }

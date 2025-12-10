@@ -341,7 +341,7 @@ def main():
                 f.write(json.dumps(data, ensure_ascii=False) + "\n")
                 # Expand linked pages for richer context
                 new_links = expand_links(data)
-                for link in new_links:
+
                     if link not in collected:
                         collected.add(link)
                 # --- NUEVO: construir registro estructurado para el RAG ---
